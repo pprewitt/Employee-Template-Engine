@@ -11,8 +11,80 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 
-// Write code to use inquirer to gather information about the development team members,
+//while true the app will ask for new employees
+let creatingEmployees = true;
 // and to create objects for each team member (using the correct classes as blueprints!)
+const teamArray = [];
+
+const chooseRole = () => {
+    return inquirer.prompt([
+        {
+            type: "list",
+            name: "EmployeeRole",
+            message: "Please select the employee role:",
+            choices: ["Manager", "Engineer","Intern", "All Employees Entered"]
+        }
+    ])
+}
+
+const employeeQuestions = () => {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Please enter the employee's name:"
+            
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Please enter the employee's assigned ID:"
+            
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Please enter the employee's work email address:"
+        },
+    ])
+}
+
+const managerQuestion = () => {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "officeNumber",
+            message: "Please enter the Manager office phone number:"
+            
+        }
+       
+    ])
+}
+const engineerQuestion = () => {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "githubUserName",
+            message: "Please enter the engineer's gitHub User Name:"
+            
+        }
+       
+    ])
+}
+
+const internQuestion = () => {
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "school",
+            message: "Please enter the intern's school:"
+            
+        }
+       
+    ])
+}
+// Write code to use inquirer to gather information about the development team members,
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
