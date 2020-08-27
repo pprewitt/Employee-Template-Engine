@@ -10,30 +10,24 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-
 //while true the app will ask for new employees
 let creatingEmployees = true;
 // and to create objects for each team member (using the correct classes as blueprints!)
 const teamArray = [];
 
-const chooseRole = () => {
+//questions everyone gets
+const employeeQuestions = () => {
     return inquirer.prompt([
         {
             type: "list",
-            name: "EmployeeRole",
-            message: "Please select the employee role:",
-            choices: ["Manager", "Engineer","Intern", "All Employees Entered"]
-        }
-    ])
-}
-
-const employeeQuestions = () => {
-    return inquirer.prompt([
+            name: "role",
+            message: "Create a new employee. Please select the employee role or select that you are done creating new profiles:",
+            choices: ["Manager", "Engineer","Intern", "Done Creating Profiles"]
+        },
         {
             type: "input",
             name: "name",
             message: "Please enter the employee's name:"
-            
         },
         {
             type: "input",
@@ -45,44 +39,75 @@ const employeeQuestions = () => {
             type: "input",
             name: "email",
             message: "Please enter the employee's work email address:"
-        },
+        }
     ])
 }
-
+// manager specific question (phone number)
 const managerQuestion = () => {
     return inquirer.prompt([
         {
             type: "input",
             name: "officeNumber",
             message: "Please enter the Manager office phone number:"
-            
         }
-       
     ])
 }
+// engineer specific question (github)
 const engineerQuestion = () => {
     return inquirer.prompt([
         {
             type: "input",
             name: "githubUserName",
             message: "Please enter the engineer's gitHub User Name:"
-            
         }
-       
     ])
 }
-
+// intern specific question (school)
 const internQuestion = () => {
     return inquirer.prompt([
         {
             type: "input",
             name: "school",
             message: "Please enter the intern's school:"
-            
         }
-       
     ])
 }
+
+// creates employee object to push into teamArray
+const createEmployee = async () => {
+    await inquirer.prompt(employeeQuestions).then((response) => {
+        let role = response.role;
+        let name = response.name;
+        let id = response.id;
+        let email = response.email;
+        let github;
+        let officeNumber;
+        let school; 
+
+if (role === "Manager"){
+    managerQuestion().then((response) => {
+        officeNumber = response.officeNumber;
+        let employee = new Manager(role, name, id, email, officeNumber);
+        teamArray.push(employee);
+        employeeQuestions();
+    })
+} else if (role === "Engineer"){
+    engineerQuestion().then((response) => {
+        github = response.githubUserName;
+        let employee = new Engineer(role, name, id, email, github);
+        teamArray.push(employee);
+        employeeQuestions();
+    });
+} else if (role === "Intern"){
+    internQuestion().then((response) => {
+        school = response.school;
+        let employee = new Intern(role, name, id, email, officeNumber);
+        teamArray.push(employee);
+        employeeQuestions();
+    })
+}
+
+
 // Write code to use inquirer to gather information about the development team members,
 
 
