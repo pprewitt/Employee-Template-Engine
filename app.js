@@ -107,7 +107,7 @@ const createEmployee = async () => {
         } else if (role === "Intern") {
             internQuestion().then((response) => {
                 school = response.school;
-                let employee = new Intern(name, id, email, officeNumber);
+                let employee = new Intern(name, id, email, school);
                 teamArray.push(employee);
                 addEmployee();
             })
