@@ -93,21 +93,21 @@ const createEmployee = async () => {
         if (role === "Manager") {
             managerQuestion().then((response) => {
                 officeNumber = response.officeNumber;
-                let employee = new Manager(role, name, id, email, officeNumber);
+                let employee = new Manager(name, id, email, officeNumber);
                 teamArray.push(employee);
                 addEmployee();
             })
         } else if (role === "Engineer") {
             engineerQuestion().then((response) => {
                 github = response.githubUserName;
-                let employee = new Engineer(role, name, id, email, github);
+                let employee = new Engineer(name, id, email, github);
                 teamArray.push(employee);
                 addEmployee();
             })
         } else if (role === "Intern") {
             internQuestion().then((response) => {
                 school = response.school;
-                let employee = new Intern(role, name, id, email, officeNumber);
+                let employee = new Intern(name, id, email, officeNumber);
                 teamArray.push(employee);
                 addEmployee();
             })
