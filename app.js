@@ -16,32 +16,38 @@ let creatingEmployees = true;
 const teamArray = [];
 
 //questions everyone gets
-const employeeQuestions = () => {
-    return inquirer.prompt([
-        {
-            type: "list",
-            name: "role",
-            message: "Create a new employee. Please select the employee role or select that you are done creating new profiles:",
-            choices: ["Manager", "Engineer","Intern", "Done Creating Profiles"]
-        },
-        {
-            type: "input",
-            name: "name",
-            message: "Please enter the employee's name:"
-        },
-        {
-            type: "input",
-            name: "id",
-            message: "Please enter the employee's assigned ID:"
-            
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "Please enter the employee's work email address:"
+const employeeQuestions = [
+    {
+        type: "list",
+        name: "role",
+        message: "Create a new employee. Please select the employee role or select that you are done creating new profiles:",
+        choices: ["Manager", "Engineer", "Intern"]
+    },
+    {
+        type: "input",
+        name: "name",
+        message: "Please enter the employee's name:"
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "Please enter the employee's assigned ID:"
+
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email address?",
+        validate: (answer) => {
+            const emailCheck = answer.match(/\S+@\S+\.\S+/);
+            if (emailCheck) {
+                return true;
+            }
+            return "Please enter a valid email address.";
         }
-    ])
-}
+    }
+]
+
 // manager specific question (phone number)
 const managerQuestion = () => {
     return inquirer.prompt([
@@ -80,33 +86,58 @@ const createEmployee = async () => {
         let name = response.name;
         let id = response.id;
         let email = response.email;
-        let github;
-        let officeNumber;
-        let school; 
+        let github = "";
+        let officeNumber = "";
+        let school = "";
 
-if (role === "Manager"){
-    managerQuestion().then((response) => {
-        officeNumber = response.officeNumber;
-        let employee = new Manager(role, name, id, email, officeNumber);
-        teamArray.push(employee);
-        employeeQuestions();
-    })
-} else if (role === "Engineer"){
-    engineerQuestion().then((response) => {
-        github = response.githubUserName;
-        let employee = new Engineer(role, name, id, email, github);
-        teamArray.push(employee);
-        employeeQuestions();
-    });
-} else if (role === "Intern"){
-    internQuestion().then((response) => {
-        school = response.school;
-        let employee = new Intern(role, name, id, email, officeNumber);
-        teamArray.push(employee);
-        employeeQuestions();
+        if (role === "Manager") {
+            managerQuestion().then((response) => {
+                officeNumber = response.officeNumber;
+                let employee = new Manager(role, name, id, email, officeNumber);
+                teamArray.push(employee);
+                addEmployee();
+            })
+        } else if (role === "Engineer") {
+            engineerQuestion().then((response) => {
+                github = response.githubUserName;
+                let employee = new Engineer(role, name, id, email, github);
+                teamArray.push(employee);
+                addEmployee();
+            })
+        } else if (role === "Intern") {
+            internQuestion().then((response) => {
+                school = response.school;
+                let employee = new Intern(role, name, id, email, officeNumber);
+                teamArray.push(employee);
+                addEmployee();
+            })
+        }
     })
 }
+const addEmployee = async () => {
+    await inquirer.prompt([
+        {
+            type: "list",
+            name: "addEmployee",
+            message: "Would you like to add another employee?",
+            choices: ["Yes", "Done, build the team"]
+        }
+    ]).then(async (response) => {
+        if (response.addEmployee === "Yes") {
+            createEmployee();
+        } else if (response.addEmployee === "Done, build the team") {
+            buildTeam();
+        }
+    })
+}
+const buildTeam = () => {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR);
+    }
+    fs.writeFileSync(outputPath, render(teamArray), "utf-8");
+};
 
+createEmployee();
 
 // Write code to use inquirer to gather information about the development team members,
 
