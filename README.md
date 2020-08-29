@@ -27,7 +27,7 @@
   
  
 ## Usage 
- Once the application has been loaded to the user's local machine, they will need to open an integrated terminal at the root directory. Run command "node app.js" to start the prompts. The user will need to select the role of each employee, enter their name, id, email, and other details specific to the role. Once the user has built all the needed profiles, they can select "done, build team" in the prompt and the application will create a directory called "output" and a "team.html" file in that folder. 
+ Once the application has been loaded to the user's local machine, they will need to open an integrated terminal at the root directory. Run command "node app.js" to start the prompts. The user will need to select the role of each employee, enter their name, id, email, and other details specific to the role. Once the user has built all the needed profiles, they can select "done, build team" in the prompt and the application will create a directory called "output" and a "team.html" file in that folder. This link demostrates the application in use: https://youtu.be/z6hXrlKXbkE
   
  
 ## Credits 
