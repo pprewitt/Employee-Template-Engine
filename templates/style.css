@@ -1,0 +1,12 @@
+.card-header{
+    background-color:#336699
+}
+.background{
+    background-color: #c6d9ec;
+}
+
+.card {
+    height: 350px;
+    width: 350px;
+    display: flex;
+}

@@ -10,9 +10,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-//while true the app will ask for new employees
-let creatingEmployees = true;
-// and to create objects for each team member (using the correct classes as blueprints!)
+
+// array to create objects for each team member (using the correct classes as blueprints!)
 const teamArray = [];
 
 //questions everyone gets
@@ -48,13 +47,13 @@ const employeeQuestions = [
     }
 ]
 
-// manager specific question (phone number)
+// manager specific question (office number)
 const managerQuestion = () => {
     return inquirer.prompt([
         {
             type: "input",
             name: "officeNumber",
-            message: "Please enter the Manager office phone number:"
+            message: "Please enter the Manager office number:"
         }
     ])
 }
@@ -114,6 +113,7 @@ const createEmployee = async () => {
         }
     })
 }
+//prompt to start prompts again or move to build the team function
 const addEmployee = async () => {
     await inquirer.prompt([
         {
@@ -130,6 +130,7 @@ const addEmployee = async () => {
         }
     })
 }
+//builds the team by creating a directory and writes file to team.html
 const buildTeam = () => {
     if (!fs.existsSync(OUTPUT_DIR)) {
         fs.mkdirSync(OUTPUT_DIR);
